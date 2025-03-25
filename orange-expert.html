@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <title>柳丁挑選專家系統</title>
+  <style>
+    body { font-family: sans-serif; padding: 20px; background: #fefce8; }
+    h2 { color: orange; }
+    .question { margin-bottom: 15px; }
+    .result { margin-top: 20px; font-size: 1.2em; font-weight: bold; }
+    button { padding: 10px 20px; font-size: 1em; }
+  </style>
+</head>
+<body>
+
+<h2>柳丁挑選專家系統</h2>
+
+<form id="expertForm">
+  <div class="question">1. 聞起來有異味嗎？
+    <label><input type="radio" name="smell" value="y"> 有</label>
+    <label><input type="radio" name="smell" value="n"> 沒有</label>
+  </div>
+
+  <div class="question">2. 蒂頭是否綠色且緊實？
+    <label><input type="radio" name="stem" value="y"> 是</label>
+    <label><input type="radio" name="stem" value="n"> 否</label>
+  </div>
+
+  <div class="question">3. 表皮是否光滑？
+    <label><input type="radio" name="skin_smooth" value="y"> 是</label>
+    <label><input type="radio" name="skin_smooth" value="n"> 否</label>
+  </div>
+
+  <div class="question">4. 果皮壓下去是否有彈性？
+    <label><input type="radio" name="elastic" value="y"> 是</label>
+    <label><input type="radio" name="elastic" value="n"> 否</label>
+  </div>
+
+  <div class="question">5. 是當季產品嗎？
+    <label><input type="radio" name="in_season" value="y"> 是</label>
+    <label><input type="radio" name="in_season" value="n"> 否</label>
+  </div>
+
+  <div class="question">6. 顏色是橙黃色的嗎？
+    <label><input type="radio" name="orange_color" value="y"> 是</label>
+    <label><input type="radio" name="orange_color" value="n"> 否</label>
+  </div>
+
+  <div class="question">7. 拿起來沉不沉？
+    <label><input type="radio" name="heavy" value="y"> 沉</label>
+    <label><input type="radio" name="heavy" value="n"> 不沉</label>
+  </div>
+
+  <button type="button" onclick="runExpertSystem()">開始判斷</button>
+</form>
+
+<div class="result" id="result">← 判斷結果會顯示在這裡</div>
+
+<script>
+function runExpertSystem() {
+  const getValue = name => {
+    const selected = document.querySelector(`input[name="${name}"]:checked`);
+    return selected ? selected.value : null;
+  };
+
+  const smell = getValue("smell");
+  const stem = getValue("stem");
+  const skin_smooth = getValue("skin_smooth");
+  const elastic = getValue("elastic");
+  const in_season = getValue("in_season");
+  const orange_color = getValue("orange_color");
+  const heavy = getValue("heavy");
+
+  const resultBox = document.getElementById("result");
+
+  if (!smell || !stem || !skin_smooth || !elastic || !in_season || !orange_color || !heavy) {
+    resultBox.innerText = "⚠️ 請回答所有問題。";
+    return;
+  }
+
+  // 判斷新鮮
+  if (smell === "y" || stem === "n" || skin_smooth === "n" || elastic === "n") {
+    resultBox.innerText = "判斷結果：不新鮮";
+    return;
+  }
+
+  let result = "判斷結果：新鮮";
+
+  // 判斷香甜
+  if (in_season === "n" || orange_color === "n") {
+    result += "、不香甜";
+  } else {
+    result += "、香甜";
+  }
+
+  // 判斷多汁
+  result += heavy === "y" ? "、多汁" : "、不多汁";
+
+  resultBox.innerText = result;
+}
+</script>
+
+</body>
+</html>
